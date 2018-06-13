@@ -1,17 +1,21 @@
 #include <Audio.h>
 #include <AudioStream.h>
 
-#define SAMPLE_RATE 44100
-#define DEFAULT_NUM_BLOCKS 129
-#define MIN_INT16 -32768
-#define MAX_INT16 32768
+#define FS 44100
+#define MAX_INT 32767
+#define MIN_INT -32768
+#define NUM_BLOCKS 128
 
-typedef struct OSCmix {
-    float sine = 0.0f;
-    float saw = 0.0f;
-    float tri = 0.0f;
-    float square = 0.0f;
-    float noise = 0.0f;
+struct OSCmix 
+{
+    OSCmix() : sine(0.0f), saw(0.0f), tri(0.0f), square(0.0f), noise(0.0f) {}
+    OSCmix(float s, float w, float t, float q, float n) :
+        sine(s), saw(w), tri(t), square(q), noise(n) {} 
+    float sine;
+    float saw;
+    float tri;
+    float square;
+    float noise;
 };
 
 class KarplusStrongString : public AudioStream
@@ -20,15 +24,19 @@ public:
     KarplusStrongString() : AudioStream(0, NULL) {};
     KarplusStrongString(int freq) : AudioStream(0, NULL), m_freq(freq)
     {
-        m_numSamples = SAMPLE_RATE / freq;
+        m_numSamples = FS / freq;
         m_KSBuffer = new int16_t[m_numSamples];
+        m_bufferIndex = 0;
     };
 
     void pluck(float velocity);
     void setFreq(int freq);
+    void tick();
     virtual void update();
 
 private:
+    void leftShiftBuffer();
+
     OSCmix          m_mix;
     int16_t         m_numSamples;
     int16_t*        m_KSBuffer;
@@ -37,6 +45,5 @@ private:
     float           m_decayFactor = 0.996;
     audio_block_t*  m_audioBlock;
 
-    int             m_bufferIndex;
-    //TODO: floats must be 16 bit too
+    int             m_bufferIndex = 0;
 };
