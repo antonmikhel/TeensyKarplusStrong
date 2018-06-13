@@ -2,9 +2,12 @@
 #include <AudioStream.h>
 
 #define FS 44100
+#define DEFAULT_FREQ 100
 #define MAX_INT 32767
 #define MIN_INT -32768
 #define NUM_BLOCKS 128
+
+typedef int16_t int16;
 
 struct OSCmix 
 {
@@ -21,30 +24,30 @@ struct OSCmix
 class KarplusStrongString : public AudioStream
 {
 public:
-    KarplusStrongString() : AudioStream(0, NULL) {};
-    KarplusStrongString(int freq) : AudioStream(0, NULL), m_freq(freq)
-    {
-        m_numSamples = FS / freq;
-        m_KSBuffer = new int16_t[m_numSamples];
-        m_bufferIndex = 0;
-    };
+    KarplusStrongString();
+    KarplusStrongString(int16 freq);
 
     void pluck(float velocity);
-    void setFreq(int freq);
+    void setFreq(int16 freq);
     void tick();
     virtual void update();
 
 private:
-    void leftShiftBuffer();
+    void            leftShiftBuffer();
+    int16           randInt();
 
     OSCmix          m_mix;
-    int16_t         m_numSamples;
-    int16_t*        m_KSBuffer;
+    int16           m_numSamples;
+    int16*          m_KSBuffer;
     bool            m_mode = false;
-    int             m_freq;
+    int16           m_freq;
     float           m_decayFactor = 0.996;
     audio_block_t*  m_audioBlock;
 
-    int16_t         m_bufferIndex = 0;
-    int16_t         m_ticks = 0;
+    int16           m_bufferIndex = 0;
+    int16           m_ticks = 0;
+
+    int16           m_randRangeMin;
+    int16           m_randRangeMax;
+    int16           m_randRangeSize;
 };
