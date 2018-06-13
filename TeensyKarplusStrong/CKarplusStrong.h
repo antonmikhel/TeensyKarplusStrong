@@ -45,5 +45,6 @@ private:
     float           m_decayFactor = 0.996;
     audio_block_t*  m_audioBlock;
 
-    int             m_bufferIndex = 0;
+    int16_t         m_bufferIndex = 0;
+    int16_t         m_ticks = 0;
 };

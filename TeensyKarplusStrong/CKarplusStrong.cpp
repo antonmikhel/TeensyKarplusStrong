@@ -57,7 +57,8 @@ void KarplusStrongString::tick()
 
     int16_t first  = m_KSBuffer[0];
     int16_t second = m_KSBuffer[1];
-    m_KSBuffer[0] = (first + second) * 0.5;
+    m_KSBuffer[0] = (first + second) * 0.5 * m_decayFactor;
 
     leftShiftBuffer();
+    m_ticks++;
 }
