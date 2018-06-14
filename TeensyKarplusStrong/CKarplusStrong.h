@@ -9,10 +9,10 @@
 
 typedef int16_t int16;
 
-struct OSCmix 
+struct OSCMix 
 {
-    OSCmix() : sine(0.0f), saw(0.0f), tri(0.0f), square(0.0f), noise(0.0f) {}
-    OSCmix(float s, float w, float t, float q, float n) :
+    OSCMix() : sine(0.0f), saw(0.0f), tri(0.0f), square(0.0f), noise(0.0f) {}
+    OSCMix(float s, float w, float t, float q, float n) :
         sine(s), saw(w), tri(t), square(q), noise(n) {} 
     float sine;
     float saw;
@@ -27,21 +27,22 @@ public:
     KarplusStrongString();
     KarplusStrongString(int16 freq);
 
-    void pluck(float velocity);
-    void setFreq(int16 freq);
-    void tick();
-    virtual void update();
+    void            pluck(float velocity);
+    void            setFreq(int16 freq);
+    void            setDecay(float d);
+    int16           tick();
+    virtual void    update();
 
 private:
     void            leftShiftBuffer();
     int16           randInt();
 
-    OSCmix          m_mix;
+    OSCMix          m_mix;
     int16           m_numSamples;
     int16*          m_KSBuffer;
     bool            m_mode = false;
     int16           m_freq;
-    float           m_decayFactor = 0.996;
+    float           m_decayFactor = 0.996f;
     audio_block_t*  m_audioBlock;
 
     int16           m_bufferIndex = 0;
@@ -50,4 +51,6 @@ private:
     int16           m_randRangeMin;
     int16           m_randRangeMax;
     int16           m_randRangeSize;
+
+    bool            m_hasBeenPlucked = false;
 };
