@@ -13,37 +13,32 @@ AudioControlSGTL5000     sgtl5000_1;
 void setup() 
 {
   AudioMemory(15);
+
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.4);
-  sine1.frequency(300);
-  sine1.amplitude(1);
-  mixer.gain(0, 0.15);
+
+  mixer.gain(0, 0.4);
   mixer.gain(1, 0);
 
-  string1.setFreq(200);
-  string1.pluck(1);
+  string1.setFreq(100);
+  
   delay(700);
 }
-int sine_f = 300;
-int s_f = 100;
+
 
 void loop() {
-  sine_f += 1;
-  sine1.frequency(sine_f);
+ OSCMix testMix = {0.0f, 0.0f, 0.0f, 5.0f, 0.0f};
+ string1.setMix(testMix);
+ string1.pluck(1);
+ delay(5000);
 
-  string1.setFreq(100);
-  string1.pluck(.9);
-  delay(4000);
+ testMix = {5.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+ string1.setMix(testMix);
+ string1.pluck(1);
+ delay(5000);
 
-  string1.setFreq(200);
-  string1.pluck(.8);
-  delay(3000);
-  
-  string1.setFreq(300);
-  string1.pluck(.7);
-  delay(2000);
-
-  string1.setFreq(400);
-  string1.pluck(.6);
-  delay(1000);
+ testMix = {0.0f, 5.0f, 0.0f, 0.0f, 0.0f};
+ string1.setMix(testMix);
+ string1.pluck(1);
+ delay(5000);
 }

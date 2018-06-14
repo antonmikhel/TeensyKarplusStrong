@@ -76,6 +76,7 @@ void KarplusStrongString::pluck(float velocity)
         saw = 2 * MAX_INT * (incrementer * i) - MAX_INT;
         // SINE
         sine = sin(incrementer * i * PI * 2) * MAX_INT;
+//        Serial.print("sine[");Serial.print(i);Serial.print("]: "); Serial.println(sine);
 
         int16 total = 0;
 
@@ -108,7 +109,7 @@ int16 KarplusStrongString::tick()
         return 0;
 
     if (m_numSamples < 2)
-        return;
+        return 0;
 
     int16 first  = m_KSBuffer[0];
     int16 second = m_KSBuffer[1];

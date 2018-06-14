@@ -27,6 +27,8 @@ public:
     KarplusStrongString();
     KarplusStrongString(int16 freq);
 
+
+    void            setMix(OSCMix mix){ m_mix = mix; };
     void            pluck(float velocity);
     void            setFreq(int16 freq);
     void            setDecay(float d);
